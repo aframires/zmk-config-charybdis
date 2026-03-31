@@ -8,7 +8,6 @@
 
 #include "charybdis.dtsi"
 #include <zephyr/dt-bindings/input/input-event-codes.h>
-#include <dt-bindings/led/led.h>
 
 &default_transform {
 	col-offset = <6>;
@@ -43,18 +42,6 @@
         };
     };
 
-    spi3_default: spi3_default {
-        group1 {
-            psels = <NRF_PSEL(SPIM_MOSI, 1, 13)>;
-        };
-    };
-
-    spi3_sleep: spi3_sleep {
-        group1 {
-            psels = <NRF_PSEL(SPIM_MOSI, 1, 13)>;
-            low-power-enable;
-        };
-    };
 };
 
 &spi0 {
@@ -89,26 +76,6 @@
     };
 };
 
-&spi3 {
-    compatible = "nordic,nrf-spim";
-    status = "okay";
-    pinctrl-0 = <&spi3_default>;
-    pinctrl-1 = <&spi3_sleep>;
-    pinctrl-names = "default", "sleep";
-
-    led_strip: ws2812@0 {
-        compatible = "worldsemi,ws2812-spi";
-        reg = <0>;
-        spi-max-frequency = <4000000>;
-        chain-length = <27>;
-        spi-one-frame = <0x70>;
-        spi-zero-frame = <0x40>;
-        color-mapping = <LED_COLOR_ID_GREEN LED_COLOR_ID_RED LED_COLOR_ID_BLUE>;
-    };
-};
-
-/ {
-    chosen {
-        zmk,underglow = &led_strip;
-    };
-};
+#define CHARYBDIS_RGB_CHAIN_LENGTH 27
+#include "charybdis_rgb.dtsi"
+#undef CHARYBDIS_RGB_CHAIN_LENGTH
