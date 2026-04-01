@@ -32,6 +32,7 @@ This configuration supports two modes:
     - [Self Section](#self-section)
   - [Keymap](#keymap)
   - [RGB LED Configuration](#rgb-led-configuration)
+    - [RGB Off/On Reliability](#rgb-offon-reliability)
     - [Change LED Data Pin](#change-led-data-pin)
     - [Change LED Count Per Side](#change-led-count-per-side)
   - [Trackball Sensitivity Configuration](#trackball-sensitivity-configuration)
@@ -368,6 +369,19 @@ Generated with [Keymap Drawer](https://github.com/caksoylar/keymap-drawer-web/)
 ![Keymap](/docs/keymap/keymap.svg)
 
 ## RGB LED Configuration
+
+### RGB Off/On Reliability
+
+If LEDs turn off but do not turn back on reliably with `RGB_ON` (until reset), set:
+
+- [`config/charybdis.conf`](/config/charybdis.conf)
+
+```kconfig
+CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=n
+```
+
+This decouples RGB commands from external power rail control.  
+With this set to `n`, `RGB_ON/OFF` controls underglow state only, which is more reliable on some builds/hardware combinations.
 
 ### Change LED Data Pin
 
