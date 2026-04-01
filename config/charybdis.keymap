@@ -89,13 +89,7 @@
       hold-trigger-on-release;
     };
 
-    // RGB controls: default action, Shift = inverse action
-    rgb_brt_mm: rgb_brt_mm {
-      compatible = "zmk,behavior-mod-morph";
-      #binding-cells = <0>;
-      bindings = <&rgb_ug RGB_BRI>, <&rgb_ug RGB_BRD>;
-      mods = <(MOD_LSFT|MOD_RSFT)>;
-    };
+    // RGB controls: dedicated brightness keys; Shift gives inverse for hue/effect.
 
     rgb_hue_mm: rgb_hue_mm {
       compatible = "zmk,behavior-mod-morph";
@@ -273,9 +267,9 @@
 // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
     &trans        &trans       &CAC W        &kp C_VOL_UP  &kp LG(MINUS) &kp LG(EQUAL)     &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &kp F11       &kp F12
 // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-    &trans        &none         &kp C_PREV    &kp C_PP      &kp C_NEXT    &kp LG(N0)        &kp F23       &kp F24       &rgb_brt_mm   &rgb_hue_mm   &rgb_eff_mm   &bootloader
+    &trans        &none         &kp C_PREV    &kp C_PP      &kp C_NEXT    &kp LG(N0)        &kp F23       &kp F24       &rgb_ug RGB_BRI &rgb_hue_mm &rgb_eff_mm   &bootloader
 // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-    &trans        &none         &none         &kp C_VOL_DN  &none         &none             &bt BT_CLR    &bt BT_CLR_ALL &rgb_ug RGB_ON &rgb_ug RGB_OFF &none         &none
+    &trans        &none         &none         &kp C_VOL_DN  &none         &none             &bt BT_CLR    &bt BT_CLR_ALL &rgb_ug RGB_ON &rgb_ug RGB_OFF &rgb_ug RGB_BRD &none
 // ╰─────────────┴─────────────┴─────────────┴─────────────┴─────────────┴─────────────╯   ╰─────────────┴─────────────┴─────────────┴─────────────┴─────────────┴─────────────╯
 //               ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮   ╭─────────────┬─────────────┬─────────────╮
                     &trans        &trans        &trans        &trans        &trans            &trans        &trans        &trans
