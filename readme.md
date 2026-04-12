@@ -104,6 +104,7 @@ The tester runs in USB-only mode (no BLE) and includes two physical layouts for 
 
 ```text
 zmk-config-charybdis/
+├── CMakeLists.txt                   # Module CMake entry (adds custom app sources)
 ├── boards/                          # Module-based shields (Zephyr 4.1+ recommended layout)
 │   └── shields/
 │       ├── charybdis/               # Charybdis shield configuration
@@ -136,6 +137,10 @@ zmk-config-charybdis/
 │           ├── tester_pro_micro.overlay              # GPIO pin definitions (18 pins)
 │           ├── tester_pro_micro.keymap               # Pin test macros
 │           └── tester_pro_micro-layouts.dtsi         # Physical layouts (pinout + single row)
+├── dts/                             # Local devicetree extensions
+│   └── bindings/
+│       └── behaviors/
+│           └── zmk,behavior-rgb-local.yaml           # Custom RGB behavior binding
 ├── config/                          # Main ZMK configuration directory (keymap + west manifest)
 │   ├── charybdis.conf               # Global ZMK configuration
 │   ├── charybdis.keymap             # Keymap definition file
@@ -145,6 +150,9 @@ zmk-config-charybdis/
 ├── manual_build/                    # Local build scripts
 │   ├── build.py                     # Interactive build script
 │   └── BUILD_README.md              # Build instructions
+├── src/                             # Local ZMK module source extensions
+│   └── behaviors/
+│       └── behavior_rgb_local.c     # Event-source RGB behavior for split/dongle mode
 ├── docs/                            # Documentation
 │   ├── bom/                         # Bill of Materials
 │   │   ├── stl/                     # 3D Print files
@@ -164,7 +172,7 @@ zmk-config-charybdis/
 │       └── wireless-charybdis.png
 ├── build.yaml                       # GitHub Actions build configuration
 ├── zephyr/
-│   └── module.yml                   # Zephyr module marker (enables discovering boards/shields/)
+│   └── module.yml                   # Zephyr module marker (board_root, dts_root, cmake)
 └── readme.md                        # This file
 ```
 
@@ -177,6 +185,10 @@ zmk-config-charybdis/
 - **`charybdis_rgb.dtsi`**: Shared RGB LED bus/device configuration (SPI, LED strip node, `zmk,underglow` chosen node)
 - **`charybdis_right_common.dtsi`**: Common hardware config for both right keyboard variants (GPIO, SPI, trackball device)
 - **`dongle_charybdis_right.conf`**: Symlink to `charybdis_right_standalone.conf` (identical hardware config)
+- **`src/behaviors/behavior_rgb_local.c`**: Custom RGB behavior using event-source locality so RGB controls execute on the half that generated the key event (useful in dongle/split mode)
+- **`dts/bindings/behaviors/zmk,behavior-rgb-local.yaml`**: Devicetree binding for the custom RGB behavior
+- **`CMakeLists.txt`**: Registers the custom behavior source into the ZMK `app` target
+- **`zephyr/module.yml`**: Exposes board/dts roots and CMake entry for this module
 
 #### Shield-Specific Files
 
