@@ -92,7 +92,7 @@
     // RGB controls routed to the event source side for split/dongle setups.
     rgb_loc: rgbloc {
       compatible = "zmk,behavior-rgb-local";
-      #binding-cells = <1>;
+      #binding-cells = <2>;
     };
 
     // RGB controls: dedicated direct bindings.
