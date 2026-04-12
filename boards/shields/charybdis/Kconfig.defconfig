@@ -48,6 +48,15 @@ config ZMK_RGB_UNDERGLOW
 
 endif
 
+if SHIELD_DONGLE_PROSPECTOR || SHIELD_DONGLE_NICE || SHIELD_DONGLE_BWSHOCKLEY_PROSPECTOR
+
+# Dongle centrals still need underglow behavior support so &rgb_ug bindings
+# from the shared keymap can dispatch correctly in split mode.
+config ZMK_RGB_UNDERGLOW
+	default y
+
+endif
+
 
 
 if SHIELD_CHARYBDIS_LEFT || SHIELD_CHARYBDIS_RIGHT_STANDALONE || SHIELD_DONGLE_CHARYBDIS_RIGHT || SHIELD_DONGLE_PROSPECTOR || SHIELD_DONGLE_NICE || SHIELD_DONGLE_BWSHOCKLEY_PROSPECTOR
