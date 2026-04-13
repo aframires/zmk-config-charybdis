@@ -18,6 +18,36 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 #if DT_HAS_COMPAT_STATUS_OKAY(DT_DRV_COMPAT)
 
+#define RGB_LOC_SYNC_CMD 1000
+
+static int rgb_apply_sync_defaults(void) {
+    int err;
+    int rc = 0;
+
+    struct zmk_led_hsb sync_hsb = {
+        .h = CONFIG_ZMK_RGB_UNDERGLOW_HUE_START,
+        .s = CONFIG_ZMK_RGB_UNDERGLOW_SAT_START,
+        .b = CONFIG_ZMK_RGB_UNDERGLOW_BRT_START,
+    };
+
+    err = zmk_rgb_underglow_on();
+    if (err < 0 && rc == 0) {
+        rc = err;
+    }
+
+    err = zmk_rgb_underglow_set_hsb(sync_hsb);
+    if (err < 0 && rc == 0) {
+        rc = err;
+    }
+
+    err = zmk_rgb_underglow_select_effect(CONFIG_ZMK_RGB_UNDERGLOW_EFF_START);
+    if (err < 0 && rc == 0) {
+        rc = err;
+    }
+
+    return rc;
+}
+
 static int on_keymap_binding_pressed(struct zmk_behavior_binding *binding,
                                      struct zmk_behavior_binding_event event) {
     ARG_UNUSED(event);
@@ -53,6 +83,8 @@ static int on_keymap_binding_pressed(struct zmk_behavior_binding *binding,
         return zmk_rgb_underglow_cycle_effect(1);
     case RGB_EFR_CMD:
         return zmk_rgb_underglow_cycle_effect(-1);
+    case RGB_LOC_SYNC_CMD:
+        return rgb_apply_sync_defaults();
     default:
         return -ENOTSUP;
     }
