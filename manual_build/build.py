@@ -126,6 +126,8 @@ def build_docker_command(build_config, workspace_path):
     west_commands.append('rm -rf /workspace/zmk-config-charybdis && mkdir -p /workspace/zmk-config-charybdis/zephyr')
     west_commands.append('if [ -d /repo/boards ]; then cp -R /repo/boards /workspace/zmk-config-charybdis/; fi')
     west_commands.append('if [ -d /repo/dts ]; then cp -R /repo/dts /workspace/zmk-config-charybdis/; fi')
+    west_commands.append('if [ -d /repo/src ]; then cp -R /repo/src /workspace/zmk-config-charybdis/; fi')
+    west_commands.append('if [ -f /repo/CMakeLists.txt ]; then cp /repo/CMakeLists.txt /workspace/zmk-config-charybdis/CMakeLists.txt; fi')
     west_commands.append('if [ -f /repo/zephyr/module.yml ]; then cp /repo/zephyr/module.yml /workspace/zmk-config-charybdis/zephyr/module.yml; fi')
 
     # Init the west workspace at /workspace, using the copied local manifest repo at /workspace/config.
@@ -209,8 +211,8 @@ def copy_firmware_to_output(workspace_path, build_dir, shield_name, board_name):
 
     # Generate output filename: shield-board.uf2
     # Replace underscores with hyphens for consistency
-    shield_clean = shield_name.replace('_', '-')
-    board_clean = board_name.replace('_', '-')
+    shield_clean = shield_name.replace('//', '_').replace('_', '-').replace(' ', '-').replace('/', '-')
+    board_clean = board_name.replace('//', '_').replace('_', '-').replace('/', '-')
     output_filename = f"{shield_clean}-{board_clean}.uf2"
     output_file = output_dir / output_filename
 
@@ -395,4 +397,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -15,3 +15,7 @@ config SHIELD_DONGLE_YADS_PROSPECTOR
 
 config SHIELD_DONGLE_NICE
 	def_bool $(shields_list_contains,dongle_nice)
+
+config CHARYBDIS_RGB
+	bool "Enable Charybdis RGB LED firmware support"
+	default n

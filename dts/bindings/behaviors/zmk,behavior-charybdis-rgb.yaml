@@ -1,0 +1,3 @@
+description: Charybdis RGB behavior that can proxy RGB commands from LED-less dongles
+compatible: "zmk,behavior-charybdis-rgb"
+include: two_param.yaml

@@ -13,6 +13,10 @@
 	col-offset = <6>;
 };
 
+#define CHARYBDIS_RGB_CHAIN_LENGTH 27
+#include "charybdis_rgb.dtsi"
+#undef CHARYBDIS_RGB_CHAIN_LENGTH
+
 &kscan0 {
 	col-gpios
 		= <&pro_micro 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
@@ -74,4 +78,3 @@
         /* NOTE: apply this mode if you need 250Hz with direct USB connection. */
     };
 };
-

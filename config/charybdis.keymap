@@ -5,6 +5,7 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/pointing.h>
+#include <dt-bindings/zmk/rgb.h>
 
 / {
     chosen { zmk,physical-layout = &charybdis_6col_layout; };
@@ -31,6 +32,22 @@
 #define SCROLL 5
 #define SNIPING 6
 #define GAMING 7
+
+#if defined(CONFIG_CHARYBDIS_RGB)
+#define CHARYBDIS_RGB_BRI &chrgb RGB_BRI
+#define CHARYBDIS_RGB_BRD &chrgb RGB_BRD
+#define CHARYBDIS_RGB_EFF &chrgb RGB_EFF
+#define CHARYBDIS_RGB_ON &chrgb RGB_ON
+#define CHARYBDIS_RGB_OFF &chrgb RGB_OFF
+#define CHARYBDIS_RGB_HUI &chrgb RGB_HUI
+#else
+#define CHARYBDIS_RGB_BRI &none
+#define CHARYBDIS_RGB_BRD &none
+#define CHARYBDIS_RGB_EFF &none
+#define CHARYBDIS_RGB_ON &none
+#define CHARYBDIS_RGB_OFF &none
+#define CHARYBDIS_RGB_HUI &none
+#endif
 
 / {
   behaviors {
@@ -85,6 +102,11 @@
       bindings = <&kp>, <&kp>;
       hold-trigger-key-positions = <0 1 2 3 4 5 12 13 14 15 16 17 24 25 26 27 28 29 36 37 38 39 40 41 48 49 50 51 52>; // Left side keys
       hold-trigger-on-release;
+    };
+
+    chrgb: chrgb {
+      compatible = "zmk,behavior-charybdis-rgb";
+      #binding-cells = <2>;
     };
   };
 
@@ -248,9 +270,9 @@
 // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
     &trans        &trans       &CAC W        &kp C_VOL_UP  &kp LG(MINUS) &kp LG(EQUAL)     &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &kp F11       &kp F12
 // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-    &trans        &none         &kp C_PREV    &kp C_PP      &kp C_NEXT    &kp LG(N0)        &kp F23       &kp F24       &none         &none         &none         &bootloader
+    &trans        &none         &kp C_PREV    &kp C_PP      &kp C_NEXT    &kp LG(N0)        &kp F23       &kp F24       CHARYBDIS_RGB_BRI CHARYBDIS_RGB_BRD CHARYBDIS_RGB_EFF &bootloader
 // ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-    &trans        &none         &none         &kp C_VOL_DN  &none         &none             &bt BT_CLR    &bt BT_CLR_ALL &none        &none         &none         &none
+    &trans        &none         &none         &kp C_VOL_DN  &none         &none             &bt BT_CLR    &bt BT_CLR_ALL CHARYBDIS_RGB_ON CHARYBDIS_RGB_OFF CHARYBDIS_RGB_HUI &none
 // ╰─────────────┴─────────────┴─────────────┴─────────────┴─────────────┴─────────────╯   ╰─────────────┴─────────────┴─────────────┴─────────────┴─────────────┴─────────────╯
 //               ╭─────────────┬─────────────┬─────────────┬─────────────┬─────────────╮   ╭─────────────┬─────────────┬─────────────╮
                     &trans        &trans        &trans        &trans        &trans            &trans        &trans        &trans

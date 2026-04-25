@@ -31,6 +31,12 @@ This configuration supports two modes:
     - [Projects Section](#projects-section)
     - [Self Section](#self-section)
   - [Keymap](#keymap)
+  - [RGB LED Configuration](#rgb-led-configuration)
+    - [Native ZMK Behavior](#native-zmk-behavior)
+    - [Enable RGB](#enable-rgb)
+    - [Battery Notes](#battery-notes)
+    - [Change LED Data Pin](#change-led-data-pin)
+    - [Change LED Count Per Side](#change-led-count-per-side)
   - [Trackball Sensitivity Configuration](#trackball-sensitivity-configuration)
     - [Hardware Sensor Sensitivity (CPI/DPI)](#hardware-sensor-sensitivity-cpidpi)
     - [Software Scaling (Movement Speed)](#software-scaling-movement-speed)
@@ -55,6 +61,8 @@ This configuration supports two modes:
 ## BOM
 
 See the full [Bill of Materials](/docs/bom/readme.md) for electronics, PCBs, fabrication files (ready-to-upload gerbers for PCBWay/JLCPCB), and 3D print files.
+
+RGB parts (SK6812 LEDs, 1uF capacitors, and 330 Ohm resistors) are optional and documented in the BOM. Use the default non-RGB firmware when LEDs are not installed or the LED chain is incomplete.
 
 ### Additional Components for Dongle Mode
 
@@ -104,6 +112,7 @@ zmk-config-charybdis/
 │       │   ├── charybdis.dtsi                        # Common device tree (keyboard layout, kscan)
 │       │   ├── charybdis_layers.h                    # Shared layer definitions
 │       │   ├── charybdis_trackball_processors.dtsi   # Shared trackball processing config
+│       │   ├── charybdis_rgb.dtsi                    # Optional shared RGB LED device config
 │       │   ├── charybdis_right_common.dtsi           # Shared right keyboard hardware config
 │       │   ├── charybdis_left.conf                   # Left side Kconfig options (empty)
 │       │   ├── charybdis_left.overlay                # Left side device tree overlay
@@ -135,6 +144,13 @@ zmk-config-charybdis/
 │   ├── charybdis.zmk.yml            # ZMK build configuration
 │   ├── info.json                    # Repository metadata
 │   └── west.yml                     # West manifest (see West.yml section below)
+├── dts/                             # Local devicetree extensions
+│   └── bindings/
+│       └── behaviors/
+│           └── zmk,behavior-charybdis-rgb.yaml       # RGB proxy behavior binding
+├── src/                             # Local ZMK module source extensions
+│   └── behaviors/
+│       └── behavior_charybdis_rgb.c                  # RGB proxy for dongle mode
 ├── manual_build/                    # Local build scripts
 │   ├── build.py                     # Interactive build script
 │   └── BUILD_README.md              # Build instructions
@@ -156,8 +172,9 @@ zmk-config-charybdis/
 │   └── picture/                     # Images
 │       └── wireless-charybdis.png
 ├── build.yaml                       # GitHub Actions build configuration
+├── CMakeLists.txt                   # Module CMake entry for local sources
 ├── zephyr/
-│   └── module.yml                   # Zephyr module marker (enables discovering boards/shields/)
+│   └── module.yml                   # Zephyr module marker (boards, DTS bindings, CMake)
 └── readme.md                        # This file
 ```
 
@@ -167,8 +184,10 @@ zmk-config-charybdis/
 
 - **`charybdis_layers.h`**: Layer definitions (BASE, POINTER, LOWER, RAISE, SYMBOLS, SCROLL, SNIPING) used across all shields
 - **`charybdis_trackball_processors.dtsi`**: Shared trackball input processing configurations (snipe/scroll/move modes)
+- **`charybdis_rgb.dtsi`**: Optional RGB LED bus/device configuration, activated by `CONFIG_CHARYBDIS_RGB`
 - **`charybdis_right_common.dtsi`**: Common hardware config for both right keyboard variants (GPIO, SPI, trackball device)
 - **`dongle_charybdis_right.conf`**: Symlink to `charybdis_right_standalone.conf` (identical hardware config)
+- **`src/behaviors/behavior_charybdis_rgb.c`**: Small global RGB proxy so LED-less dongles can send RGB commands to keyboard halves
 
 #### Shield-Specific Files
 
@@ -360,6 +379,70 @@ Generated with [Keymap Drawer](https://github.com/caksoylar/keymap-drawer-web/)
 
 ![Keymap](/docs/keymap/keymap.svg)
 
+## RGB LED Configuration
+
+RGB support is opt-in. Default firmware does not enable the LED driver, which keeps firmware safe for boards with no LEDs or incomplete LED chains.
+
+### Native ZMK Behavior
+
+This repo uses ZMK's RGB underglow implementation for the keyboard halves. The keymap calls a small Charybdis RGB wrapper so dongle builds can send RGB commands to the left/right peripherals without requiring an LED strip on the dongle itself.
+
+ZMK's stock `&rgb_ug` behavior is global on normal split keyboards. The wrapper keeps that same global-locality model, but returns no-op on LED-less dongles and applies the stock RGB actions on halves that have `CONFIG_ZMK_RGB_UNDERGLOW=y`.
+
+RGB controls use ZMK-style relative commands. If the halves already have different saved RGB settings, reset settings or clear both halves before testing so effect, color, and brightness start from the same state.
+
+### Enable RGB
+
+Use RGB firmware only when the LED chain is installed and wired. Enable it in [`config/charybdis.conf`](/config/charybdis.conf):
+
+```kconfig
+CONFIG_CHARYBDIS_RGB=y
+```
+
+This flag enables the LED driver only on the existing keyboard-half shields:
+
+- `charybdis_left`
+- `charybdis_right_standalone`
+- `dongle_charybdis_right`
+
+Dongle display shields, including `dongle_nice_64 dongle_display`, keep `CONFIG_ZMK_RGB_UNDERGLOW` disabled because they do not have a local LED strip. They still build the RGB wrapper, so raise-layer RGB keys can proxy commands to connected keyboard halves.
+
+RGB firmware starts with LEDs off and uses the rainbow/spectrum effect at 25% brightness when enabled.
+
+### Battery Notes
+
+LEDs can draw power even when they look off, especially if the firmware leaves the LED rail powered. With `CONFIG_CHARYBDIS_RGB=y`, keyboard-half shields set:
+
+```kconfig
+CONFIG_ZMK_RGB_UNDERGLOW_ON_START=n
+CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=y
+```
+
+`ON_START=n` keeps LEDs off after flashing/reset until you turn them on. `EXT_POWER=y` lets ZMK's RGB on/off behavior control the external power rail on boards that support it, which is better for battery life than software-only LED off.
+
+After flashing RGB firmware or resetting settings, press the RGB off key once if you want the LED power rail saved off. ZMK's generic external-power driver enables the rail by default until saved settings say otherwise.
+
+If `RGB_ON` does not reliably turn LEDs back on for your hardware, test `CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=n`. That fallback is usually more reliable, but it can drain battery faster because LED power is not hard-cut.
+
+### Change LED Data Pin
+
+To change the RGB LED data pin, edit:
+
+- [`boards/shields/charybdis/charybdis_rgb.dtsi`](/boards/shields/charybdis/charybdis_rgb.dtsi)
+
+Update both `NRF_PSEL(SPIM_MOSI, <port>, <pin>)` values. The current default is Pro Micro `D15`, nice!nano v2 `P1.13`:
+
+```dts
+psels = <NRF_PSEL(SPIM_MOSI, 1, 13)>;
+```
+
+### Change LED Count Per Side
+
+The per-side LED count is set where the shared RGB include is used:
+
+- Left side: [`boards/shields/charybdis/charybdis_left.overlay`](/boards/shields/charybdis/charybdis_left.overlay) uses `29`.
+- Right side: [`boards/shields/charybdis/charybdis_right_common.dtsi`](/boards/shields/charybdis/charybdis_right_common.dtsi) uses `27`.
+
 ## Trackball Sensitivity Configuration
 
 The trackball sensitivity can be adjusted at both hardware and software levels.
@@ -516,8 +599,9 @@ The interactive build script provides options for:
 4. **dongle_prospector prospector_adapter** - Dongle with Prospector display (XIAO BLE)
 5. **dongle_nice_32 dongle_display** - Nice!Nano dongle with 128x32 OLED
 6. **dongle_nice_64 dongle_display** - Nice!Nano dongle with 128x64 OLED
-7. **tester_pro_micro** - GPIO pin tester for Pro Micro-compatible boards
-8. **settings_reset** - Reset stored settings
+7. **settings_reset** - Reset stored settings for Nice!Nano
+8. **settings_reset** - Reset stored settings for XIAO BLE
+9. **tester_pro_micro** - GPIO pin tester for Pro Micro-compatible boards
 
 Note: Local builds use a dedicated workspace under `manual_build/west-workspace/` and should behave the same as CI. If a specific configuration fails locally, prefer building in GitHub Actions and then iterate locally once the dependency/workspace is stable.
 
