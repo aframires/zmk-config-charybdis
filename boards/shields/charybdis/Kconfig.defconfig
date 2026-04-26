@@ -53,7 +53,7 @@ config ZMK_RGB_UNDERGLOW_ON_START
 	default y
 
 config ZMK_RGB_UNDERGLOW_EXT_POWER
-	default y
+	default n
 
 config ZMK_RGB_UNDERGLOW_EFF_START
 	default 2

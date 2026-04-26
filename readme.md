@@ -415,14 +415,14 @@ LEDs can draw power even when they look off, especially if the firmware leaves t
 
 ```kconfig
 CONFIG_ZMK_RGB_UNDERGLOW_ON_START=y
-CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=y
+CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=n
 ```
 
-`ON_START=y` starts LEDs after a settings reset. `EXT_POWER=y` lets ZMK's RGB on/off behavior control the external power rail on boards that support it, which is better for battery life than software-only LED off.
+`ON_START=y` starts LEDs after a settings reset. `EXT_POWER=n` keeps RGB on/off as a software LED-state change instead of cutting the board's external-power rail. This is safer for this hardware because the PMW3610 trackball and right-side behavior can become unstable if RGB off also removes shared external power.
 
-After flashing RGB firmware or resetting settings, press the RGB off key once if you want the LED power rail saved off. ZMK's generic external-power driver enables the rail by default until saved settings say otherwise.
+With `EXT_POWER=n`, `RGB_OFF` should turn the LEDs off while leaving the rest of the board powered. This may use more battery than hard-cutting LED power, but avoids breaking the trackball or requiring reset before `RGB_ON` works again.
 
-If `RGB_ON` does not reliably turn LEDs back on for your hardware, test `CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=n`. That fallback is usually more reliable, but it can drain battery faster because LED power is not hard-cut.
+If future hardware revisions isolate the LED rail cleanly, `CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=y` can be retested for better battery life.
 
 ### Change LED Data Pin
 
