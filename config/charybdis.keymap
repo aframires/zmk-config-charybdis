@@ -33,21 +33,12 @@
 #define SNIPING 6
 #define GAMING 7
 
-#if defined(CONFIG_CHARYBDIS_RGB)
 #define CHARYBDIS_RGB_BRI &chrgb RGB_BRI
 #define CHARYBDIS_RGB_BRD &chrgb RGB_BRD
 #define CHARYBDIS_RGB_EFF &chrgb RGB_EFF
 #define CHARYBDIS_RGB_ON &chrgb RGB_ON
 #define CHARYBDIS_RGB_OFF &chrgb RGB_OFF
 #define CHARYBDIS_RGB_HUI &chrgb RGB_HUI
-#else
-#define CHARYBDIS_RGB_BRI &none
-#define CHARYBDIS_RGB_BRD &none
-#define CHARYBDIS_RGB_EFF &none
-#define CHARYBDIS_RGB_ON &none
-#define CHARYBDIS_RGB_OFF &none
-#define CHARYBDIS_RGB_HUI &none
-#endif
 
 / {
   behaviors {

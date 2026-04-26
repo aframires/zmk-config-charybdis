@@ -405,20 +405,20 @@ This flag enables the LED driver only on the existing keyboard-half shields:
 - `charybdis_right_standalone`
 - `dongle_charybdis_right`
 
-Dongle display shields, including `dongle_nice_64 dongle_display`, keep `CONFIG_ZMK_RGB_UNDERGLOW` disabled because they do not have a local LED strip. They still build the RGB wrapper, so raise-layer RGB keys can proxy commands to connected keyboard halves.
+Dongle display shields, including `dongle_nice_64 dongle_display`, keep `CONFIG_ZMK_RGB_UNDERGLOW` disabled because they do not have a local LED strip. They still build the RGB wrapper, so raise-layer RGB keys can proxy commands to connected keyboard halves. The RGB key bindings are always present in the keymap because devicetree/keymap preprocessing cannot reliably branch on `CONFIG_CHARYBDIS_RGB`; when RGB is disabled, the wrapper remains a no-op and the LED driver stack is not enabled.
 
-RGB firmware starts with LEDs off and uses the rainbow/spectrum effect at 25% brightness when enabled.
+RGB firmware starts with LEDs on and uses the rainbow/spectrum effect at 25% brightness after settings reset. Existing saved ZMK settings can override this, so flash `settings_reset` to each half once if a newly flashed RGB build still starts with LEDs off.
 
 ### Battery Notes
 
 LEDs can draw power even when they look off, especially if the firmware leaves the LED rail powered. With `CONFIG_CHARYBDIS_RGB=y`, keyboard-half shields set:
 
 ```kconfig
-CONFIG_ZMK_RGB_UNDERGLOW_ON_START=n
+CONFIG_ZMK_RGB_UNDERGLOW_ON_START=y
 CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=y
 ```
 
-`ON_START=n` keeps LEDs off after flashing/reset until you turn them on. `EXT_POWER=y` lets ZMK's RGB on/off behavior control the external power rail on boards that support it, which is better for battery life than software-only LED off.
+`ON_START=y` starts LEDs after a settings reset. `EXT_POWER=y` lets ZMK's RGB on/off behavior control the external power rail on boards that support it, which is better for battery life than software-only LED off.
 
 After flashing RGB firmware or resetting settings, press the RGB off key once if you want the LED power rail saved off. ZMK's generic external-power driver enables the rail by default until saved settings say otherwise.
 
