@@ -31,12 +31,7 @@ This configuration supports two modes:
     - [Projects Section](#projects-section)
     - [Self Section](#self-section)
   - [Keymap](#keymap)
-  - [RGB LED Configuration](#rgb-led-configuration)
-    - [Native ZMK Behavior](#native-zmk-behavior)
-    - [Enable RGB](#enable-rgb)
-    - [Battery Notes](#battery-notes)
-    - [Change LED Data Pin](#change-led-data-pin)
-    - [Change LED Count Per Side](#change-led-count-per-side)
+  - [RGB LED Documentation](#rgb-led-documentation)
   - [Trackball Sensitivity Configuration](#trackball-sensitivity-configuration)
     - [Hardware Sensor Sensitivity (CPI/DPI)](#hardware-sensor-sensitivity-cpidpi)
     - [Software Scaling (Movement Speed)](#software-scaling-movement-speed)
@@ -62,7 +57,7 @@ This configuration supports two modes:
 
 See the full [Bill of Materials](/docs/bom/readme.md) for electronics, PCBs, fabrication files (ready-to-upload gerbers for PCBWay/JLCPCB), and 3D print files.
 
-RGB parts (SK6812 LEDs, 1uF capacitors, and 330 Ohm resistors) are optional and documented in the BOM. Use the default non-RGB firmware when LEDs are not installed or the LED chain is incomplete.
+RGB parts are optional. See the dedicated [RGB LED documentation](/docs/led/readme.md) for firmware flags, pins, LED counts, nice!nano v2 power rails, and troubleshooting notes.
 
 ### Additional Components for Dongle Mode
 
@@ -169,6 +164,8 @@ zmk-config-charybdis/
 │   │   ├── keymap.yaml              # Base keymap definition
 │   │   ├── keymap.svg               # Generated: Visual keymap (created by render.sh)
 │   │   └── render.sh                # Script to parse keymap and generate SVG
+│   ├── led/                         # RGB LED firmware and power notes
+│   │   └── readme.md
 │   └── picture/                     # Images
 │       └── wireless-charybdis.png
 ├── build.yaml                       # GitHub Actions build configuration
@@ -379,69 +376,9 @@ Generated with [Keymap Drawer](https://github.com/caksoylar/keymap-drawer-web/)
 
 ![Keymap](/docs/keymap/keymap.svg)
 
-## RGB LED Configuration
+## RGB LED Documentation
 
-RGB support is opt-in. Default firmware does not enable the LED driver, which keeps firmware safe for boards with no LEDs or incomplete LED chains.
-
-### Native ZMK Behavior
-
-This repo uses ZMK's RGB underglow implementation for the keyboard halves. The keymap calls a small Charybdis RGB wrapper so dongle builds can send RGB commands to the left/right peripherals without requiring an LED strip on the dongle itself.
-
-ZMK's stock `&rgb_ug` behavior is global on normal split keyboards. The wrapper keeps that same global-locality model, but returns no-op on LED-less dongles and applies the stock RGB actions on halves that have `CONFIG_ZMK_RGB_UNDERGLOW=y`.
-
-RGB controls use ZMK-style relative commands. If the halves already have different saved RGB settings, reset settings or clear both halves before testing so effect, color, and brightness start from the same state.
-
-### Enable RGB
-
-Use RGB firmware only when the LED chain is installed and wired. Enable it in [`config/charybdis.conf`](/config/charybdis.conf):
-
-```kconfig
-CONFIG_CHARYBDIS_RGB=y
-```
-
-This flag enables the LED driver only on the existing keyboard-half shields:
-
-- `charybdis_left`
-- `charybdis_right_standalone`
-- `dongle_charybdis_right`
-
-Dongle display shields, including `dongle_nice_64 dongle_display`, keep `CONFIG_ZMK_RGB_UNDERGLOW` disabled because they do not have a local LED strip. They still build the RGB wrapper, so raise-layer RGB keys can proxy commands to connected keyboard halves. The RGB key bindings are always present in the keymap because devicetree/keymap preprocessing cannot reliably branch on `CONFIG_CHARYBDIS_RGB`; when RGB is disabled, the wrapper remains a no-op and the LED driver stack is not enabled.
-
-RGB firmware starts with LEDs on and uses the rainbow/spectrum effect at 25% brightness after settings reset. Existing saved ZMK settings can override this, so flash `settings_reset` to each half once if a newly flashed RGB build still starts with LEDs off.
-
-### Battery Notes
-
-LEDs can draw power even when they look off, especially if the firmware leaves the LED rail powered. With `CONFIG_CHARYBDIS_RGB=y`, keyboard-half shields set:
-
-```kconfig
-CONFIG_ZMK_RGB_UNDERGLOW_ON_START=y
-CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=n
-```
-
-`ON_START=y` starts LEDs after a settings reset. `EXT_POWER=n` keeps RGB on/off as a software LED-state change instead of cutting the board's external-power rail. This is safer for this hardware because the PMW3610 trackball and right-side behavior can become unstable if RGB off also removes shared external power.
-
-With `EXT_POWER=n`, `RGB_OFF` should turn the LEDs off while leaving the rest of the board powered. This may use more battery than hard-cutting LED power, but avoids breaking the trackball or requiring reset before `RGB_ON` works again.
-
-If future hardware revisions isolate the LED rail cleanly, `CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=y` can be retested for better battery life.
-
-### Change LED Data Pin
-
-To change the RGB LED data pin, edit:
-
-- [`boards/shields/charybdis/charybdis_rgb.dtsi`](/boards/shields/charybdis/charybdis_rgb.dtsi)
-
-Update both `NRF_PSEL(SPIM_MOSI, <port>, <pin>)` values. The current default is Pro Micro `D15`, nice!nano v2 `P1.13`:
-
-```dts
-psels = <NRF_PSEL(SPIM_MOSI, 1, 13)>;
-```
-
-### Change LED Count Per Side
-
-The per-side LED count is set where the shared RGB include is used:
-
-- Left side: [`boards/shields/charybdis/charybdis_left.overlay`](/boards/shields/charybdis/charybdis_left.overlay) uses `29`.
-- Right side: [`boards/shields/charybdis/charybdis_right_common.dtsi`](/boards/shields/charybdis/charybdis_right_common.dtsi) uses `27`.
+See [RGB LED documentation](/docs/led/readme.md) for firmware flags, raise-layer controls, LED data pin, LED counts, nice!nano v2 pinout, power-rail behavior, and the external-power caveat that can affect the PMW3610 trackball.
 
 ## Trackball Sensitivity Configuration
 
