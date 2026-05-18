@@ -1,5 +1,10 @@
 # ZMK CONFIG FOR THE CHARYBDIS 4X6 WIRELESS SPLIT KEYBOARD ZEPHYR 4.1
 
+> [!WARNING]
+> This is the long-lived LED/RGB branch, not the default branch.
+>
+> It contains optional SK6812 RGB firmware support, LED wiring documentation, and nice!nano v2 VCC power notes. The `main` branch remains the default non-RGB branch and should be used when LEDs are not installed or the LED chain is incomplete.
+
 This configuration supports two modes:
 
 - **Standalone Mode**: Right keyboard acts as central, connects directly to host

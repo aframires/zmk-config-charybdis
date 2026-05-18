@@ -1,5 +1,10 @@
 # Charybdis RGB LED Notes
 
+> [!WARNING]
+> This document belongs to the long-lived LED/RGB branch, not `main`.
+>
+> The `main` branch remains the default non-RGB branch. Keep this branch separate unless the optional LED hardware becomes part of the default build.
+
 This document covers the optional SK6812 RGB LED support for this ZMK config, including firmware flags, LED data pins, LED counts, nice!nano v2 power rails, and the known external-power caveat.
 
 RGB parts are optional. Use non-RGB firmware when LEDs are not installed or the LED chain is incomplete.
