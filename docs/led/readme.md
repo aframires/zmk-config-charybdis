@@ -46,12 +46,14 @@ RGB controls use ZMK-style relative commands. If the halves already have differe
 
 ## Defaults
 
-RGB firmware starts with LEDs on and uses the rainbow/spectrum effect at 25% brightness after settings reset. Existing saved ZMK settings can override this, so flash `settings_reset` to each half once if a newly flashed RGB build still starts with LEDs off.
+RGB firmware starts with LEDs off and uses the rainbow/spectrum effect at 25% brightness when RGB is enabled. This matches the current hardware setup where LED VDD has its own physical switch.
+
+Existing saved ZMK settings can override compile-time defaults, so flash `settings_reset` to each half once if a newly flashed RGB build does not follow the defaults.
 
 Current defaults are set in [`boards/shields/charybdis/Kconfig.defconfig`](/boards/shields/charybdis/Kconfig.defconfig):
 
 ```kconfig
-CONFIG_ZMK_RGB_UNDERGLOW_ON_START=y
+CONFIG_ZMK_RGB_UNDERGLOW_ON_START=n
 CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=n
 CONFIG_ZMK_RGB_UNDERGLOW_EFF_START=2
 CONFIG_ZMK_RGB_UNDERGLOW_BRT_START=25
@@ -185,7 +187,7 @@ Practical hardware guidance:
 - The LED switch must not cut power to PMW3610, keyboard matrix pullups, or other critical logic.
 - Keep PMW3610 I/O voltage aligned with the MCU logic voltage.
 
-Recommended physical switch wiring:
+Current physical switch wiring:
 
 ```text
 nice!nano VCC / 3.3V ----> PMW3610 VDD
@@ -206,6 +208,8 @@ CONFIG_ZMK_RGB_UNDERGLOW_EXT_POWER=n
 ```
 
 With `EXT_POWER=n`, `RGB_OFF` turns LEDs off through the LED driver while leaving the board power rail enabled. This may use more battery than hard-cutting LED power, but it avoids destabilizing the PMW3610 trackball or requiring reset before `RGB_ON` works again.
+
+The physical LED VDD switch is the hardware-level power-off path. Use it when you want zero LED strip drain while keeping PMW3610 and the keyboard logic powered normally.
 
 The behavior with `EXT_POWER=y` is unsafe for this PCB because it can cut more than the LED rail:
 
