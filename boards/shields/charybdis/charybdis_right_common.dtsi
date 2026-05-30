@@ -64,7 +64,7 @@
         // swap-xy + invert-x only. Re-enable invert-y if axis feels reversed.
         swap-xy;
         invert-x;
-        // invert-y;
+        invert-y;
         evt-type = <INPUT_EV_REL>;
         x-input-code = <INPUT_REL_X>;
         y-input-code = <INPUT_REL_Y>;
