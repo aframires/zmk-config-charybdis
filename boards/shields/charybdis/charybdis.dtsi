@@ -19,12 +19,15 @@
       columns = <12>;
       rows = <5>;
 
+      // MiaoMiao right thumbs are wired to row 4 + raw cols 3/4/5
+      // (= matrix cols 9/10/11 after col-offset), not the BastardKB
+      // cols 0/2/4 layout (which would be RC(4,6) RC(4,8) RC(4,10)).
       map = <
 RC(0,0) RC(0,1) RC(0,2) RC(0,3) RC(0,4) RC(0,5)  RC(0,6) RC(0,7) RC(0,8) RC(0,9) RC(0,10) RC(0,11)
 RC(1,0) RC(1,1) RC(1,2) RC(1,3) RC(1,4) RC(1,5)  RC(1,6) RC(1,7) RC(1,8) RC(1,9) RC(1,10) RC(1,11)
 RC(2,0) RC(2,1) RC(2,2) RC(2,3) RC(2,4) RC(2,5)  RC(2,6) RC(2,7) RC(2,8) RC(2,9) RC(2,10) RC(2,11)
 RC(3,0) RC(3,1) RC(3,2) RC(3,3) RC(3,4) RC(3,5)  RC(3,6) RC(3,7) RC(3,8) RC(3,9) RC(3,10) RC(3,11)
-        RC(4,1) RC(4,2) RC(4,3) RC(4,4) RC(4,5)  RC(4,6)         RC(4,8)         RC(4,10)
+        RC(4,1) RC(4,2) RC(4,3) RC(4,4) RC(4,5)  RC(4,9) RC(4,10) RC(4,11)
       >;
     };
 
@@ -103,19 +106,23 @@ RC(3,0) RC(3,1) RC(3,2) RC(3,3) RC(3,4) RC(3,5)  RC(3,6) RC(3,7) RC(3,8) RC(3,9)
             , <&key_physical_attrs 100 100 1400  338       0     0     0>
 
             // Thumb Clusters
-            // Keys array order matches keymap bindings (positions 48-55)
-            // Left thumb bindings: 48=LALT, 49=LOWER, 50=POINTER, 51=gui_ctrlb, 52=LCTRL
-            // Right thumb bindings: 53=RET, 54=SYMBOLS, 55=RAISE
-            // Physical coordinates per actual key positions from keymap comments
+            // Keys array order matches keymap bindings (positions 48-55).
+            // These physical attrs come from the upstream zmk-config-charybdis
+            // (carrefinho) and were tuned for the visual ZMK Studio layout.
+            // The actual key positions on the MiaoMiao PCB may not match
+            // exactly; if Studio shows thumbs in odd spots, tweak x/y/rot.
+            //
+            // Left thumbs  (48 49 50 51 52) = TAB/NAV, BSPC, LGUI, SPACE, DEL
+            // Right thumbs (53 54 55)       = ENTER,  SPACE, BSPC/SYM
             //                       w   h    x    y     rot    rx    ry
-            , <&key_physical_attrs 100 100  518  420    1500   398   790>  // 48 (LALT) - physical: 3rd from left
-            , <&key_physical_attrs 100 100  482  520    1500   398   790>  // 49 (LOWER) - physical: 5th from left
-            , <&key_physical_attrs 100 100  348  414    900    398   790>  // 50 (POINTER) - physical: 1st from left
-            , <&key_physical_attrs 100 100  418  414    1500   398   790>  // 51 (gui_ctrlb) - physical: 2nd from left
-            , <&key_physical_attrs 100 100  382  514    1500   398   790>  // 52 (LCTRL) - physical: 4th from left
-            , <&key_physical_attrs 100 100 1052  520 (-3000)  1102   790>  // 53 (RET) - physical: 3rd from right (bottom)
-            , <&key_physical_attrs 100 100 1067  414 (-1500)  1102   790>  // 54 (SYMBOLS) - physical: 2nd from right (top)
-            , <&key_physical_attrs 100 100 1052  420 (-3000)  1102   790>  // 55 (RAISE) - physical: 1st from right (top)
+            , <&key_physical_attrs 100 100  518  420    1500   398   790>  // 48 - 3rd from left
+            , <&key_physical_attrs 100 100  482  520    1500   398   790>  // 49 - 5th from left
+            , <&key_physical_attrs 100 100  348  414    900    398   790>  // 50 - 1st from left
+            , <&key_physical_attrs 100 100  418  414    1500   398   790>  // 51 - 2nd from left
+            , <&key_physical_attrs 100 100  382  514    1500   398   790>  // 52 - 4th from left
+            , <&key_physical_attrs 100 100 1052  520 (-3000)  1102   790>  // 53 - 3rd from right (bottom)
+            , <&key_physical_attrs 100 100 1067  414 (-1500)  1102   790>  // 54 - 2nd from right (top)
+            , <&key_physical_attrs 100 100 1052  420 (-3000)  1102   790>  // 55 - 1st from right (top)
             ;
     };
 

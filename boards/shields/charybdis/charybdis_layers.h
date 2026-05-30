@@ -8,13 +8,11 @@
 
 #pragma once
 
-// Layer definitions matching the keymap
-#define BASE 0
-#define POINTER 1
-#define LOWER 2
-#define RAISE 3
-#define SYMBOLS 4
-#define SCROLL 5
-#define SNIPING 6
-#define GAMING 7
+// Layer definitions matching the keymap (BastardKB-vendor scheme)
+#define BASE    0
+#define NAV     1
+#define SYM     2
+#define ADJ     3
+#define SCROLL  4
+#define SNIPING 5
 
