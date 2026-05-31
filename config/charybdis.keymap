@@ -81,11 +81,11 @@
             label = "BASE";
             display-name = "Base";
             bindings = <
-&kp ESC     &kp N1   &kp N2   &kp N3   &kp N4    &kp N5         &kp N6   &kp N7    &kp N8     &kp N9    &kp N0    &kp MINUS
+&kp ESC     &kp N1   &kp N2   &kp N3   &kp N4    &kp N5         &kp N6   &kp N7    &kp N8     &kp N9    &kp N0    &kp GRAVE
 &kp TAB     &kp Q    &kp W    &kp E    &kp R     &kp T          &kp Y    &kp U     &kp I      &kp O     &kp P     &kp BSLH
 &kp LSHFT   &kp A    &kp S    &kp D    &kp F     &kp G          &kp H    &kp J     &kp K      &kp L     &kp SEMI  &kp SQT
-&kp LCTRL   &kp Z    &kp X    &kp C    &kp V     &kp B          &kp N    &kp M     &kp COMMA  &kp DOT   &kp FSLH  &kp RALT
-                 &kp LBKT  &kp LGUI  &mo NAV  &kp LALT  &kp SPACE    &kp RET  &kp BSPC  &lt SYM BSPC
+&kp LCTRL   &kp Z    &kp X    &kp C    &kp V     &kp B          &kp N    &kp M     &kp COMMA  &kp DOT   &kp FSLH  &kp MINUS
+                 &kp LBKT  &kp SPACE  &mo NAV  &kp LALT  &kp LGUI    &kp RET  &kp BSPC  &lt SYM BSPC
             >;
         };
 
@@ -93,10 +93,10 @@
             label = "NAV";
             display-name = "Nav";
             bindings = <
-&kp F12   &kp F1         &kp F2          &kp F3      &kp F4       &kp F5         &kp F6    &kp F7         &kp F8    &kp F9    &kp F10        &kp F11
-&trans    &kp SLCK       &kp PAUSE_BREAK &kp UP      &kp EQUAL    &kp LBRC       &kp RBRC  &kp KP_N7      &kp KP_N8 &kp KP_N9 &kp KP_PLUS    &trans
-&trans    &kp PSCRN      &kp INS         &kp LEFT    &kp DOWN     &kp RIGHT      &kp LBKT  &kp RBKT       &kp KP_N4 &kp KP_N5 &kp KP_N6      &kp KP_MINUS
-&trans    &kp DEL        &kp PG_UP       &kp CAPS    &kp PG_DN    &kp LPAR       &kp RPAR  &kp KP_N1      &kp KP_N2 &kp KP_N3 &kp KP_MULTIPLY &trans
+&kp F1    &kp F2         &kp F3          &kp F4      &kp F5       &kp F6         &kp F7    &kp F8         &kp F9    &kp F10   &kp F11        &kp F12
+&trans    &kp C_PLAY_PAUSE &kp PAUSE_BREAK &kp LBRC  &kp EQUAL    &kp LBRC       &kp RBRC  &kp KP_N7      &kp KP_N8 &kp KP_N9 &kp KP_PLUS    &trans
+&trans    &kp PSCRN      &kp LBKT        &kp RBKT    &kp RBRC     &trans         &kp LBKT  &mkp MB1       &mkp MB3  &mkp MB2  &kp KP_N6      &kp KP_MINUS
+&trans    &kp DEL        &kp PG_UP       &mo SCROLL  &mo SNIPING  &kp LPAR       &kp RPAR  &kp KP_N1      &mo SCROLL &mo SNIPING &kp KP_MULTIPLY &trans
                     &trans   &trans   &kp C_VOL_DN   &kp C_VOL_UP &trans         &kp KP_DOT &kp KP_N0    &mo ADJ
             >;
         };
@@ -105,11 +105,11 @@
             label = "SYM";
             display-name = "Sym";
             bindings = <
-&kp F12   &kp F1    &kp F2    &kp F3    &kp F4     &kp F5            &kp F6     &kp F7    &kp F8    &kp F9    &kp F10    &kp F11
-&trans    &kp EXCL  &kp AT    &kp HASH  &kp DLLR   &kp PRCNT         &kp CARET  &kp AMPS  &kp ASTRK &kp QMARK &kp SQT    &trans
-&trans    &kp PLUS  &kp EQUAL &kp LPAR  &kp RPAR   &kp DQT           &kp COLON  &kp LBKT  &kp RBKT  &kp LBRC  &kp RBRC   &trans
-&trans    &kp LT    &kp PIPE  &kp MINUS &kp GT     &kp BSLH          &kp GRAVE  &kp UNDER &kp FSLH  &kp TILDE &kp SEMI   &trans
-                    &mo ADJ   &trans    &kp C_VOL_DN &kp C_VOL_UP    &trans     &kp C_NEXT &kp C_PP &trans
+&bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4      &trans     &trans    &trans    &trans    &kp HOME   &kp END
+&trans    &kp EXCL  &kp AT    &kp HASH  &kp DLLR   &kp PRCNT         &kp CARET  &kp AMPS  &kp ASTRK &kp QMARK &kp SQT    &kp PG_UP
+&trans    &kp PLUS  &kp EQUAL &kp LPAR  &kp RPAR   &kp DQT           &kp COLON  &kp LEFT  &kp UP    &kp DOWN  &kp RIGHT  &kp PG_DN
+&trans    &kp LT    &kp PIPE  &kp MINUS &kp GT     &kp BSLH          &kp GRAVE  &kp UNDER &kp EQUAL &kp PLUS  &kp MINUS  &trans
+                    &mo ADJ   &trans    &kp C_VOL_DN &kp C_VOL_UP    &trans     &kp C_NEXT &kp DEL &trans
             >;
         };
 
