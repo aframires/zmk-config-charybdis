@@ -8,6 +8,8 @@ manifest:
     url-base: https://github.com/carrefinho
   - name: englmaxi
     url-base: https://github.com/englmaxi
+  - name: oleksandrmaslov
+    url-base: https://github.com/oleksandrmaslov
   # janpfischer remote disabled - zmk-dongle-screen has Zephyr 4.1 compatibility issues
   # - name: janpfischer
   #   url-base: https://github.com/janpfischer
@@ -24,6 +26,9 @@ manifest:
     revision: feat/new-status-screens
   - name: zmk-dongle-display
     remote: englmaxi
+    revision: main
+  - name: zmk-pointing-acceleration
+    remote: oleksandrmaslov
     revision: main
   # zmk-dongle-screen disabled - Zephyr 4.1 compatibility issues pending upstream fix
   # See: https://github.com/janpfischer/zmk-dongle-screen/issues/29
