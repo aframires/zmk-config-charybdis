@@ -17,8 +17,8 @@
 &pointer_accel {
     input-type = <INPUT_EV_REL>;
     track-remainders;
-    min-factor = <400>;         /* 0.4x at slow speeds for precision (like your 30% default speed slider) */
-    max-factor = <3500>;        /* 3.5x at high speeds (like your Fast acceleration slider) */
+    min-factor = <700>;         /* 0.7x at slow speeds for slightly faster precision */
+    max-factor = <2500>;        /* 2.5x at high speeds (reduced from 3.5x) */
     speed-threshold = <1000>;   /* Counts per second before acceleration kicks in */
     speed-max = <6000>;         /* Counts per second at which max acceleration is reached */
     acceleration-exponent = <2>; /* Quadratic curve for aggressive acceleration */
