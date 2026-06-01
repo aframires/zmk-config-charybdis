@@ -17,11 +17,11 @@
 &pointer_accel {
     input-type = <INPUT_EV_REL>;
     track-remainders;
-    min-factor = <700>;         /* 0.7x at slow speeds for slightly faster precision */
-    max-factor = <2500>;        /* 2.5x at high speeds (reduced from 3.5x) */
+    min-factor = <900>;         /* 0.9x at slow speeds for faster precision */
+    max-factor = <3000>;        /* 3.0x at high speeds for a faster peak */
     speed-threshold = <1000>;   /* Counts per second before acceleration kicks in */
     speed-max = <6000>;         /* Counts per second at which max acceleration is reached */
-    acceleration-exponent = <2>; /* Quadratic curve for aggressive acceleration */
+    acceleration-exponent = <1>; /* Linear curve for smoother, more predictable ramp */
 };
 
 // Standard trackball processing configuration
