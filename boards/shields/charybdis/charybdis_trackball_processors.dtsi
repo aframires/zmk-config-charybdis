@@ -17,7 +17,7 @@
 &pointer_accel {
     input-type = <INPUT_EV_REL>;
     track-remainders;
-    min-factor = <900>;         /* 0.9x at slow speeds for faster precision */
+    min-factor = <950>;         /* 0.95x at slow speeds for faster precision */
     max-factor = <3000>;        /* 3.0x at high speeds for a faster peak */
     speed-threshold = <1000>;   /* Counts per second before acceleration kicks in */
     speed-max = <6000>;         /* Counts per second at which max acceleration is reached */
