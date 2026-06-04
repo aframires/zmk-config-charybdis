@@ -24,6 +24,13 @@
     acceleration-exponent = <1>; /* Linear curve for smoother, more predictable ramp */
 };
 
+/ {
+    trackball_temp_layer: trackball_temp_layer {
+        compatible = "zmk,input-processor-temp-layer";
+        #input-processor-cells = <2>;
+    };
+};
+
 // Standard trackball processing configuration
 // Can be used in both standalone (trackball_listener) and dongle mode (input_split_listener)
 #define CHARYBDIS_TRACKBALL_PROCESSORS \
@@ -39,6 +46,5 @@
     \
     move { \
         layers = <BASE NAV SYM ADJ>; \
-        input-processors = <&pointer_accel>; \
+        input-processors = <&pointer_accel>, <&trackball_temp_layer NAV 500>; \
     };
-
