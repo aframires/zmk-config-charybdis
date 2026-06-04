@@ -15,4 +15,4 @@
 #define ADJ     3
 #define SCROLL  4
 #define SNIPING 5
-
+#define MOUSE   6
