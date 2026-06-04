@@ -17,11 +17,11 @@
 &pointer_accel {
     input-type = <INPUT_EV_REL>;
     track-remainders;
-    min-factor = <950>;         /* 0.95x at slow speeds for faster precision */
+    min-factor = <1000>;        /* 1.0x (1:1 speed) at slow speeds for instant response */
     max-factor = <3000>;        /* 3.0x at high speeds for a faster peak */
-    speed-threshold = <1000>;   /* Counts per second before acceleration kicks in */
+    speed-threshold = <1200>;   /* Slightly higher threshold before acceleration kicks in */
     speed-max = <6000>;         /* Counts per second at which max acceleration is reached */
-    acceleration-exponent = <1>; /* Linear curve for smoother, more predictable ramp */
+    acceleration-exponent = <2>; /* Quadratic curve for a much smoother, predictable ramp */
 };
 
 / {
@@ -46,5 +46,5 @@
     \
     move { \
         layers = <BASE NAV SYM ADJ MOUSE>; \
-        input-processors = <&pointer_accel>, <&trackball_temp_layer MOUSE 500>; \
+        input-processors = <&pointer_accel>; \
     };
