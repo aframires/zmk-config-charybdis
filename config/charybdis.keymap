@@ -97,7 +97,7 @@
 &kp F1    &kp F2         &kp F3          &kp F4      &kp F5       &kp F6         &kp F7    &kp F8         &kp F9    &kp F10   &kp F11        &kp F12
 &kp CAPS  &kp C_PLAY_PAUSE &kp PAUSE_BREAK &kp LBRC  &kp EQUAL    &kp LBRC       &kp RBRC  &kp KP_N7      &kp KP_N8 &kp KP_N9 &kp KP_PLUS    &trans
 &kp LSHFT &kp PSCRN      &kp LBKT        &kp RBKT    &kp RBRC     &trans         &kp C_AC_BACK &mkp MB1       &mkp MB3  &mkp MB2  &kp KP_N6      &kp KP_MINUS
-&kp LCTRL &kp DEL        &kp PG_UP       &mo SCROLL  &mo SNIPING  &kp LPAR       &kp RPAR  &kp KP_N1      &mo SCROLL &mo SNIPING &kp KP_MULTIPLY &trans
+&kp LCTRL &kp DEL        &kp PG_UP       &mo SCROLL  &mo SNIPING  &kp LPAR       &kp RPAR  &kp KP_N1      &kp PLUS   &mo SNIPING &kp KP_MULTIPLY &trans
                     &trans   &kp C_VOL_DN   &trans         &kp C_VOL_UP &kp F16        &trans     &trans       &mo ADJ
             >;
         };
