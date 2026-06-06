@@ -30,6 +30,7 @@
 #define ADJ     3
 #define SCROLL  4
 #define SNIPING 5
+#define MOUSE   6
 
 &lt {
     flavor = "tap-preferred";
@@ -148,6 +149,18 @@
 &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans    &trans  &mkp MB1 &mkp MB2 &mkp MB3 &trans &trans
 &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
+                &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans
+            >;
+        };
+
+        mouse_layer {
+            label = "MOUSE";
+            display-name = "Mouse";
+            bindings = <
+&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans    &kp C_AC_BACK &mkp MB1 &mkp MB3 &mkp MB2 &trans &trans
+&trans  &trans  &trans  &mo SCROLL &mo SNIPING &trans    &trans  &trans  &mo SCROLL &mo SNIPING &trans &trans
                 &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans
             >;
         };
