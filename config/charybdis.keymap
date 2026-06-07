@@ -160,7 +160,7 @@
 &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans    &kp C_AC_BACK &mkp MB1 &mkp MB3 &mkp MB2 &trans &trans
-&trans  &trans  &trans  &mo SCROLL &mo SNIPING &trans    &trans  &trans  &mo SCROLL &mo SNIPING &trans &trans
+&trans  &trans  &trans  &trans &trans &trans    &trans  &trans  &mo SCROLL &mo SNIPING &trans &trans
                 &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans
             >;
         };
